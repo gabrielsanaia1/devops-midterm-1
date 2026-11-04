@@ -1,5 +1,5 @@
 const PRIORITIES = ['low', 'medium', 'high'];
-const MAX_PAGE_SIZE = 50;
+
 
 function httpError(status, message) {
   const err = new Error(message);
@@ -8,7 +8,7 @@ function httpError(status, message) {
 }
 
 function parseDueDate(value) {
-  if (value == null) {
+  if ((value === null || value === undefined)) {
     return null;
   }
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) {
@@ -23,18 +23,29 @@ function parseDueDate(value) {
 
 async function createTask(store, input = {}) {
   const { title, priority, dueDate } = input;
-  if (typeof title !== 'string' || title.length === 0) {
+
+  if (typeof title !== 'string') {
     throw httpError(400, 'title is required');
   }
-  if (title.length > 100) {
+
+  const cleanedTitle = title.trim();
+
+  if (cleanedTitle.length === 0) {
+    throw httpError(400, 'title is required');
+  }
+
+  if (cleanedTitle.length > 100) {
     throw httpError(400, 'title is too long');
   }
+
   const level = priority ?? 'medium';
+
   if (!PRIORITIES.includes(level)) {
     throw httpError(400, 'invalid priority');
   }
+
   return store.add({
-    title,
+    title: cleanedTitle,
     priority: level,
     dueDate: parseDueDate(dueDate),
     done: false,
@@ -46,7 +57,7 @@ async function createTask(store, input = {}) {
 async function listTasks(store, { priority } = {}) {
   const all = await store.all();
 
-  const filtered = priority == null
+  const filtered = (priority === null || priority === undefined)
     ? all
     : all.filter((t) => t.priority === priority);
 
@@ -55,17 +66,22 @@ async function listTasks(store, { priority } = {}) {
 
 async function getTask(store, id) {
   const all = await store.all();
-  const task = all.find((t) => t.id == id);
+  const task = all.find((t) => t.id === Number(id));
   if (!task) {
     throw httpError(404, 'task not found');
   }
   return task;
 }
-
 async function completeTask(store, id) {
   const task = await getTask(store, id);
+
+  if (task.done) {
+    throw httpError(409, 'task already completed');
+  }
+
   task.done = true;
   task.completedAt = new Date().toISOString();
+
   return store.update(task);
 }
 
@@ -77,11 +93,14 @@ async function removeTask(store, id) {
 async function stats(store) {
   const all = await store.all();
   const done = all.filter((t) => t.done).length;
+
   return {
     total: all.length,
     done,
     open: all.length - done,
-    doneRate: Math.round(done / all.length),
+    doneRate: all.length === 0
+      ? 0
+      : Math.round((done / all.length) * 100),
   };
 }
 

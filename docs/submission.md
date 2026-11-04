@@ -15,7 +15,7 @@ GitHub მომხმარებელი: gabrielsanaia1
 
 ## CI GitHub Actions-ით
 
-- წითელი workflow run:
+- წითელი workflow run: https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/41895423990/job/126803525513?pr=3
 
 ## ტესტირება და კოდის ხარისხი
 

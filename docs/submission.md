@@ -15,13 +15,12 @@ GitHub მომხმარებელი: gabrielsanaia1
 
 ## CI GitHub Actions-ით
 
-- წითელი workflow run: https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/41895423990/job/126803525513?pr=3
+- წითელი workflow run: https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/41895423990/job/126803525513?pr=312
 
 ## ტესტირება და კოდის ხარისხი
 
-- მწვანე workflow run:
-- coverage artifact:
-
+- მწვანე workflow run: https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/41901276415
+- coverage artifact:https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/41901276415 ცოვერაგე 22,24
 ## Docker
 
 - PR, docker/hardening:

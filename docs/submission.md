@@ -1,8 +1,8 @@
 # ჩაბარების ფორმა
 
-სახელი, გვარი:
-GitHub მომხმარებელი:
-რეპოზიტორია:
+სახელი, გვარი: გაბრიელ სანაია
+GitHub მომხმარებელი: gabrielsanaia1
+რეპოზიტორია: https://github.com/gabrielsanaia1/devops-midterm-1
 
 ## Value Stream და DORA მეტრიკები
 

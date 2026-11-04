@@ -10,8 +10,8 @@ GitHub მომხმარებელი: gabrielsanaia1
 
 ## Git workflows
 
-- PR, feature/priority-filter:
-- PR, feature/due-date:
+- PR, feature/priority-filter: https://github.com/gabrielsanaia1/devops-midterm-1/pull/1
+- PR, feature/due-date: https://github.com/gabrielsanaia1/devops-midterm-1/pull/2
 
 ## CI GitHub Actions-ით
 

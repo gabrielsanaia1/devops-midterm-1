@@ -13,11 +13,11 @@ function createRedisStore(url) {
   client.connect().catch((err) => console.error(`redis: ${err.message}`));
 
   return {
-    async ping() {
+        async ping() {
       try {
         await client.ping();
         return true;
-      } catch (err) {
+      } catch {
         return false;
       }
     },

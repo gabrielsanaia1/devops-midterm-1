@@ -35,3 +35,7 @@ npm start
 6. არარსებულ ამოცანაზე პასუხია 404.
 7. `doneRate` არის დასრულებული ამოცანების პროცენტი, მთელ რიცხვამდე დამრგვალებული. ამოცანების არარსებობისას ის 0-ია.
 8. `dueDate` არჩევითია, ფორმატით `YYYY-MM-DD`. არასწორ ფორმატზე ან წარსულ თარიღზე პასუხია 400.
+
+## CI
+
+[![CI](https://github.com/gabrielsanaia1/devops-midterm-1/actions/workflows/ci.yml/badge.svg)](https://github.com/gabrielsanaia1/devops-midterm-1/actions/workflows/ci.yml)

@@ -1,0 +1,33 @@
+# ჩაბარების ფორმა
+
+სახელი, გვარი: გაბრიელ სანაია
+GitHub მომხმარებელი: gabrielsanaia1
+რეპოზიტორია: https://github.com/gabrielsanaia1/devops-midterm-1
+
+## Value Stream და DORA მეტრიკები
+
+- `docs/value-stream.md`
+
+## Git workflows
+
+- PR, feature/priority-filter:
+- PR, feature/due-date:
+
+## CI GitHub Actions-ით
+
+- წითელი workflow run:
+
+## ტესტირება და კოდის ხარისხი
+
+- მწვანე workflow run:
+- coverage artifact:
+
+## Docker
+
+- PR, docker/hardening:
+
+## CD და rollback
+
+- v1.0.0 workflow run:
+- v1.1.0 workflow run:
+- v1.1.1 workflow run:

@@ -23,7 +23,7 @@ GitHub მომხმარებელი: gabrielsanaia1
 - coverage artifact:https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/41901276415 coverage 22,24
 ## Docker
 
-- PR, docker/hardening:
+- PR, docker/hardening: https://github.com/gabrielsanaia1/devops-midterm-1/pull/4
 
 ## CD და rollback
 

@@ -10,7 +10,8 @@ function createApp(store) {
   app.use(express.json());
 
   app.get('/health', wrap(async (req, res) => {
-    const ok = await store.ping();
+    await store.ping();
+    const ok = false; // Intentional failure for rollback exercise
     res.status(ok ? 200 : 503).json({ status: ok ? 'ok' : 'unavailable' });
   }));
 

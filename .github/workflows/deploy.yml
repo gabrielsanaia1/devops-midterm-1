@@ -1,0 +1,132 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Deploy an existing version, e.g. v1.0.0'
+        required: true
+        default: 'v1.0.0'
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      image: ${{ steps.image.outputs.image }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare image name
+        id: image
+        run: |
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}:${GITHUB_REF_NAME}"
+          echo "image=$IMAGE" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "$GH_TOKEN" | docker login ghcr.io \
+            -u "$GITHUB_ACTOR" --password-stdin
+
+      - name: Build and push
+        env:
+          IMAGE: ${{ steps.image.outputs.image }}
+        run: |
+          docker build --build-arg APP_VERSION="$GITHUB_REF_NAME" \
+            -t "$IMAGE" .
+          docker push "$IMAGE"
+
+  deploy-staging:
+    needs: publish
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "$GH_TOKEN" | docker login ghcr.io \
+            -u "$GITHUB_ACTOR" --password-stdin
+
+      - name: Start staging
+        env:
+          IMAGE: ${{ needs.publish.outputs.image }}
+        run: |
+          docker pull "$IMAGE"
+          docker run -d --name staging -p 3000:3000 "$IMAGE"
+
+      - name: Smoke test
+        run: bash scripts/smoke.sh http://localhost:3000
+
+      - name: Container logs
+        if: always()
+        run: docker logs staging
+
+      - name: Cleanup
+        if: always()
+        run: docker rm -f staging || true
+
+  deploy-production:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate version and prepare image
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          if [[ ! "$VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Expected version format: v1.0.0"
+            exit 1
+          fi
+          echo "IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}:$VERSION" >> "$GITHUB_ENV"
+
+      - name: Log in to GHCR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "$GH_TOKEN" | docker login ghcr.io \
+            -u "$GITHUB_ACTOR" --password-stdin
+
+      - name: Start production
+        run: |
+          docker pull "$IMAGE"
+          docker run -d --name production -p 3000:3000 "$IMAGE"
+
+      - name: Smoke test
+        run: bash scripts/smoke.sh http://localhost:3000
+
+      - name: Record deployed version
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          echo "Production simulation passed: $VERSION" >> "$GITHUB_STEP_SUMMARY"
+          curl -fsS http://localhost:3000/version
+
+      - name: Container logs
+        if: always()
+        run: docker logs production
+
+      - name: Cleanup
+        if: always()
+        run: docker rm -f production || true

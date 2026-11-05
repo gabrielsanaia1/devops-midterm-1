@@ -27,6 +27,9 @@ GitHub მომხმარებელი: gabrielsanaia1
 
 ## CD და rollback
 
-- v1.0.0 workflow run:
-- v1.1.0 workflow run:
-- v1.1.1 workflow run:
+- v1.0.0 workflow run: https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/42041225510
+- v1.1.0 workflow run: https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/42056610135
+- Rollback workflow run: https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/42056968762
+- v1.1.1 workflow run: https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/42062753322
+- აღწერა: [rollback.md](rollback.md)
+

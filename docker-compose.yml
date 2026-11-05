@@ -1,13 +1,29 @@
 services:
   api:
-    build: .
+    image: devops-midterm-1:after
+    build:
+      context: .
+      args:
+        APP_VERSION: ${APP_VERSION}
     ports:
-      - "3000:3000"
+      - "${PORT}:${PORT}"
     environment:
-      - PORT=3000
-      - REDIS_URL=redis://localhost:6379
+      PORT: ${PORT}
+      REDIS_URL: ${REDIS_URL}
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
 
   redis:
     image: redis:7-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    volumes:
+      - redis-data:/data
+
+volumes:
+  redis-data:

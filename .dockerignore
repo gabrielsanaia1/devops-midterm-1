@@ -1,0 +1,11 @@
+node_modules
+coverage
+.git
+.github
+docs
+test
+.env
+.env.*
+*.log
+.scannerwork
+sonar-project.properties

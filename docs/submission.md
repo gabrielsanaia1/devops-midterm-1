@@ -20,7 +20,7 @@ GitHub მომხმარებელი: gabrielsanaia1
 ## ტესტირება და კოდის ხარისხი
 
 - მწვანე workflow run: https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/41901276415
-- coverage artifact:https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/41901276415 ცოვერაგე 22,24
+- coverage artifact:https://github.com/gabrielsanaia1/devops-midterm-1/actions/runs/41901276415 coverage 22,24
 ## Docker
 
 - PR, docker/hardening:
